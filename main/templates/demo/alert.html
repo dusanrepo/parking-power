@@ -1,0 +1,148 @@
+{% extends 'demo/base.html' %}
+{% load bootstrap4 staticfiles icons %}
+{% block title %}Alerts{% endblock title %}
+{% block filter %}
+{% endblock filter %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-dashboard-twelve">
+            <div class="card-header py-0 border-bottom-0">
+                <div class="sales-overview" style="display: inline-block">
+                    <h6 class="card-title mt-4">Recent Alerts</h6>
+                    <div class="media-body mt-3 ml-3"></div>
+                    <div class="media-">
+                    </div>
+                </div>
+                <div class="mx-4" style="display: inline-block">
+                    <label class="rdiobox mr-3" style="display: inline">
+                        <input name="rdio" type="radio" checked="" style="padding-top: -5px">
+                        <span>Approved</span>
+                    </label>
+                    <label class="rdiobox mr-3" style="display: inline">
+                        <input name="rdio" type="radio" checked="">
+                        <span>Unapproved</span>
+                    </label>
+                    <label class="rdiobox mr-3" style="display: inline">
+                        <input name="rdio" type="radio" checked="">
+                        <span>All</span>
+                    </label>
+                    <a href="#" class="btn btn-secondary btn-az-sm">Filter</a>
+                </div>
+            </div>
+            <div class="card-body py-0">
+                <table class='table my-3'>
+                    <tr>
+                        <th>Date</th>
+                        <th>License Plate</th>
+                        <th>Notes</th>
+                    </tr>
+                    {% for alert in alerts %}
+                    <tr>
+                        <td>{{ alert.date }}</td>
+                        <td>
+                            {{ alert.value }}
+                            {% if alert.approved %}
+                            <span class="badge badge-secondary">Approved</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ alert.note }}</td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row my-3">
+    <div class="col-md-12">
+        <div class="card card-dashboard-twelve">
+            <div class="card-header py-0 border-bottom-0">
+                <div class="sales-overview">
+                    <h6 class="card-title mt-4">Templates</h6>
+                </div>
+            </div>
+            <div class="card-body pt-0">
+                <table class="table">
+                    <tr>
+                        <th>Type</th>
+                        <th>Emails</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for template in templates %}
+                    <tr>
+                        <td>{{ template.type }}</td>
+                        <td>{{ template.emails }}</td>
+                        <td>{{ template.phone_nums }}</td>
+                        <td>
+                            <a href="#"><i class="fa fa-trash"></i></a>
+                            <a href="#"><i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <a href="" class="btn btn-primary" data-toggle="modal" data-target="#modaldemo1"><i class="fa fa-plus"></i>
+                    New Alert</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modaldemo1" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header">
+                <h6 class="modal-title">New Alert</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Email addresses</label>
+                        <input type="" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com, name@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Phone numbers</label>
+                        <input type="" class="form-control" id="exampleFormControlInput1" placeholder="0123456789, 0123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Alert Type</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>Vehicle is in blacklist</option>
+                            <option>Unapproved vehicle parked for </option>
+                            <option>Approved vehicle parked for </option>
+                            <option>Vehicle parked for </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Duration</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option>1 hour</option>
+                            <option>2 hours</option>
+                            <option>3 hours</option>
+                            <option>4 hours</option>
+                            <option>5 hours</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Custom message</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-indigo">Save changes</button>
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block bootstrap4_extra_script %}
+
+{% endblock %}

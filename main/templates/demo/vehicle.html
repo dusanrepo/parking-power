@@ -1,0 +1,194 @@
+{% extends 'demo/base.html' %}
+{% load bootstrap4 staticfiles icons %}
+{% block title %}Vehicle 95H6979{% endblock title %}
+{% block filter %}
+<div class="media">
+    <div class="media-body">
+        <label>From</label>
+        <h6>Dec 12, 2018</h6>
+    </div><!-- media-body -->
+</div><!-- media -->
+<div class="media">
+    <div class="media-body">
+        <label>To</label>
+        <h6>Dec 19, 2018</h6>
+    </div><!-- media-body -->
+</div><!-- media -->
+{% endblock filter %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-dashboard-twelve">
+            <div class="card-body">
+                <div class="text-center">
+                    <img src="{% static 'car.jpg' %}" alt="" style="height: 250px;" class="">
+                </div>
+                <table class="table table-hover my-3">
+                    <tr>
+                        <th>Entrance</th>
+                        <th>Exit</th>
+                        <th>Duration</th>
+                        <th>Cameras</th>
+                        <th>Images</th>
+                    </tr>
+                    <tr>
+                        <td>Dec 18, 8:00pm</td>
+                        <td>Dec 19, 4:00pm</td>
+                        <td>20 hours</td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 1</span>
+                            <span class="badge badge-secondary">Exit 3</span>
+                        </td>
+                        <td>
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dec 17, 10:00pm</td>
+                        <td>Dec 18, 12:00pm</td>
+                        <td>14 hours</td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 1</span>
+                            <span class="badge badge-secondary">Exit 3</span>
+                        </td>
+                        <td>
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dec 17, 9:10am</td>
+                        <td>Dec 17, 10:10am</td>
+                        <td>60 minutes</td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 1</span>
+                            <span class="badge badge-secondary">Exit 3</span>
+                        </td>
+                        <td>
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dec 16, 9:00am</td>
+                        <td>Dec 16, 2:00pm</td>
+                        <td>5 hours</td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 1</span>
+                            <span class="badge badge-secondary">Exit 3</span>
+                        </td>
+                        <td>
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                            <img src="{% static 'car.jpg' %}" alt="" style="width: 50px;">
+                        </td>
+                    </tr>
+                </table>
+
+                <label class="az-content-label tx-13 mg-b-20 my-3">Comments</label>
+                <table>
+                    <tr>
+                        <td>Dec 5, 10:00</td>
+                        <td>Gave warning about using handicap parking</td>
+                    </tr>
+                </table>
+                <h5 class="mt-5">New Comment</h5>
+                <div class="input-group" style="width: 300px;">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control fc-datepicker hasDatepicker" placeholder="{{ now|date:"m/d/Y" }}"
+                        id="dp1545996670144">
+                    <input type="text" class="form-control fc-datepicker hasDatepicker" placeholder="{{ now|date:"P" }}"
+                        id="dp1545996670144">
+                </div>
+                <br>
+                <textarea rows="3" class="form-control" placeholder="Textarea"></textarea>
+                <button type="submit" class="btn btn-primary mt-3">Save</button>
+                <!-- az-profile-social-list -->
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-dashboard-twelve">
+            <div class="card-body">
+                <div class="row mg-b-20">
+                    <div class="col-md-12">
+                        <h4 class="mb-3">95H6979 </h4>
+                        <label class="ckbox">
+                            <input type="checkbox" checked=""><span>Approved</span>
+                        </label>
+                        <div class="my-3">
+
+                            <h5>Average stay: 5 hours</h5>
+                            <h5>Average visits per month: 28</h5>
+                        </div>
+                        <hr>
+                        <div style='height: 250px; width: 100%;'><canvas id="chartStacked1"></canvas></div>
+                        <div>Time spent in the parking</div>
+                    </div><!-- col -->
+                </div><!-- row -->
+
+
+                <div class="row">
+                    <div class="col-md-12"></div><!-- col -->
+                </div><!-- row -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block bootstrap4_extra_script %}
+<script src="{% static 'lib/Chart.bundle.min.js' %}"></script>
+<script>
+    $(function () {
+        'use strict';
+        /** STACKED BAR CHART **/
+        var ctx6 = document.getElementById('chartStacked1');
+        new Chart(ctx6, {
+            type: 'bar',
+            data: {
+                labels: 'Sun. Mon. Tue. Wed. Thu. Fri. Sat.'.split(' '),
+                datasets: [{
+                    data: [1, 10, 24, 5, 1, 14, 20],
+                    backgroundColor: '#314d83',
+                    borderWidth: 1,
+                    fill: true
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                    labels: {
+                        display: false
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        stacked: true,
+                        ticks: {
+                            beginAtZero: true,
+                            fontSize: 11
+                        }
+                    }],
+                    xAxes: [{
+                        barPercentage: 0.5,
+                        stacked: true,
+                        ticks: {
+                            fontSize: 11
+                        }
+                    }]
+                }
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}

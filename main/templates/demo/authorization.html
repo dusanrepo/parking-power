@@ -1,0 +1,348 @@
+{% extends 'demo/base.html' %}
+{% load bootstrap4 staticfiles icons %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% bootstrap_messages %}
+{% block title %}Authorizations{% endblock title %}
+{% block filter %}
+{% endblock filter %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-dashboard-twelve">
+            <div class="card-header py-0 border-bottom-0">
+                <div class="sales-overview">
+                    <h6 class="card-title mt-4"><i class="fa fa-check-square text-success"></i> Authorized Vehicles</h6>
+                </div>
+            </div>
+            <div class="card-body py-0">
+                <table class='table'>
+                    <tr>
+                        <th>License Plate</th>
+                        <th>Name</th>
+                        <th>Make/Model</th>
+                        <th>Color</th>
+                        <th>Notes</th>
+                        <th></th>
+                    </tr>
+
+                    {% for entry in whitelist %}
+                    <tr id="{{ entry.id }}">
+                        <td>{{ entry.license_plate }}</td>
+                        <td>{{ entry.vehicle_name }}</td>
+                        <td>{{ entry.make_model }}</td>
+                        <td>{{ entry.vehicle_color }}</td>
+                        <td>{{ entry.notes }}</td>
+                        <td>
+                            <a href="#" data-toggle="modal" data-target="#remove_modal_t_{{entry.id}}"><i class="fa fa-trash"></i></a>
+                            <a href="#" data-toggle="modal" data-target="#vehicle_edit_t_{{entry.id}}"><i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
+                                <!-- remove vehicle from authorized list -->
+                                <div id="remove_modal_t_{{entry.id}}" class="modal">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content modal-content-demo">
+                                            <form action="{% url 'vehicle_delete' vehicle_id=entry.id auth_flag=entry.is_authorized %}" method="post" class="form">
+                                                {% csrf_token %}
+                                                {% bootstrap_form form %}
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">Are you sure to remove this vehicle?</h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    {% buttons %}
+                                                    <button type="submit" class="btn btn-indigo">Yes</button>
+                                                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">No</button>
+                                                    {% endbuttons %}
+                                                </div>
+                                            </form>    
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- edit vehicle info from authorized list -->
+                                <div id="vehicle_edit_t_{{entry.id}}" class="modal">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content modal-content-demo">
+                                            <form action="{% url 'vehicle_edit' vehicle_id=entry.id auth_flag=entry.is_authorized %}" method="post">
+                                                {% csrf_token %}
+                                                <div class="modal-header">
+                                                    <h6 class="modal-title">Edit Vehicle</h6>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="license_plate">License Plate</label>
+                                                                <input type="text" class="form-control" id="license_plate_t_{{entry.id}}" placeholder="ABC-123" name="license_plate"> 
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="vehicle_name">Name</label>
+                                                                <input type="text" class="form-control" id="vehicle_name_t_{{entry.id}}" placeholder="John Smith" name="vehicle_name">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="vehicle_model_make">Vehicle Model and Make</label>
+                                                            <input type="text" class="form-control" id="vehicle_model_make_t_{{entry.id}}" placeholder="Prius 2012" name="vehicle_model_make">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="vehicle_color">Color</label>
+                                                            <input type="text" class="form-control" id="vehicle_color_t_{{entry.id}}" placeholder="Red" name="vehicle_color">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="vehicle_note">Note</label>
+                                                            <input type="text" class="form-control" id="vehicle_note_t_{{entry.id}}" placeholder="" name="vehicle_note">
+                                                        </div>
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-indigo">Save changes</button>
+                                                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </form>    
+                                        </div>
+                                    </div>
+                                </div>
+                    {% endfor %}
+                </table>
+                <hr>
+                <button class="btn btn-primary my-3" data-toggle="modal" data-target="#new_vehicle_authorized"><i class="fa fa-plus"></i>
+                    New Vehicle</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-dashboard-twelve">
+            <div class="card-header py-0 border-bottom-0">
+                <div class="sales-overview">
+                    <h6 class="card-title mt-4"><i class="fa fa-exclamation-triangle text-danger"></i> Blacklist</h6>
+                </div>
+            </div>
+            <div class="card-body py-0">
+                <table class='table '>
+                    <tr>
+                        <th>License Plate</th>
+                        <th>Name</th>
+                        <th>Make/Model</th>
+                        <th>Color</th>
+                        <th>Notes</th>
+                        <th></th>
+                    </tr>
+                    {% for entry in blacklist %}
+                    <tr id="{{entry.id}}">
+                        <td>{{ entry.license_plate }}</td>
+                        <td>{{ entry.vehicle_name }}</td>
+                        <td>{{ entry.make_model }}</td>
+                        <td>{{ entry.vehicle_color }}</td>
+                        <td>{{ entry.notes }}</td>
+                        <td>
+                            <a href="#" data-toggle="modal" data-target="#remove_modal_f_{{entry.id}}"><i class="fa fa-trash"></i></a>
+                            <a href="#" data-toggle="modal" data-target="#vehicle_edit_f_{{entry.id}}"><i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
+                            <!-- remove vehicle from the blacklist -->
+                            <div id="remove_modal_f_{{entry.id}}" class="modal">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <form action="{% url 'vehicle_delete' vehicle_id=entry.id auth_flag=entry.is_authorized %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-header">
+                                                <h6 class="modal-title">Are you sure to remove this vehicle?</h6>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-indigo">Yes</button>
+                                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">No</button>
+                                            </div>
+                                        </form>    
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- edit vehicle info from the blacklist -->
+                            <div id="vehicle_edit_f_{{entry.id}}" class="modal">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <form action="{% url 'vehicle_edit' vehicle_id=entry.id auth_flag=entry.is_authorized %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-header">
+                                                <h6 class="modal-title">Edit Vehicle</h6>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="{{entry.id}}">
+                                                
+                                                    <div class="form-row" >
+                                                        <div class="form-group col-md-6">
+                                                            <label for="license_plate">License Plate</label>
+                                                            <input type="text" class="form-control" id="license_plate_f_{{entry.id}}" placeholder="ABC-123" name="license_plate"> 
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="vehicle_name">Name</label>
+                                                            <input type="text" class="form-control" id="vehicle_name_f_{{entry.id}}" placeholder="John Smith" name="vehicle_name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="vehicle_model_make">Vehicle Model and Make</label>
+                                                        <input type="text" class="form-control" id="vehicle_model_make_f_{{entry.id}}" placeholder="Prius 2012" name="vehicle_model_make">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="vehicle_color">Color</label>
+                                                        <input type="text" class="form-control" id="vehicle_color_f_{{entry.id}}" placeholder="Red" name="vehicle_color">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="vehicle_note">Note</label>
+                                                        <input type="text" class="form-control" id="vehicle_note_f_{{entry.id}}" placeholder="" name="vehicle_note">
+                                                    </div>
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-indigo">Save changes</button>
+                                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>    
+                                    </div>
+                                </div>
+                            </div>
+                    {% endfor %}
+                </table>
+                <hr>
+                <a href="#" class="btn btn-primary my-3" data-toggle="modal" data-target="#new_vehicle_blacklist"><i class="fa fa-plus"></i>
+                    New Vehicle</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="new_vehicle_authorized" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-content-demo">
+            <form action="{% url 'vehicle_new' auth_flag='1'  %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h6 class="modal-title">New Vehicle</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="license_plate">License Plate</label>
+                                <input type="text" class="form-control" id="" placeholder="ABC-123" name="license_plate"> 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="vehicle_name">Name</label>
+                                <input type="text" class="form-control" id="" placeholder="John Smith" name="vehicle_name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_model_make">Vehicle Model and Make</label>
+                            <input type="text" class="form-control" id="" placeholder="Prius 2012" name="vehicle_model_make">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_color">Color</label>
+                            <input type="text" class="form-control" id="" placeholder="Red" name="vehicle_color">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_note">Note</label>
+                            <input type="text" class="form-control" id="" placeholder="" name="vehicle_note">
+                        </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-indigo">Save changes</button>
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                </div>
+            </form>    
+        </div>
+    </div>
+</div>
+<div id="new_vehicle_blacklist" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-content-demo">
+            <form action="{% url 'vehicle_new' auth_flag='-1'  %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h6 class="modal-title">New Vehicle</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="license_plate">License Plate</label>
+                                <input type="text" class="form-control" id="" placeholder="ABC-123" name="license_plate"> 
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="vehicle_name">Name</label>
+                                <input type="text" class="form-control" id="" placeholder="John Smith" name="vehicle_name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_model_make">Vehicle Model and Make</label>
+                            <input type="text" class="form-control" id="" placeholder="Prius 2012" name="vehicle_model_make">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_color">Color</label>
+                            <input type="text" class="form-control" id="" placeholder="Red" name="vehicle_color">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_note">Note</label>
+                            <input type="text" class="form-control" id="" placeholder="" name="vehicle_note">
+                        </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-indigo">Save changes</button>
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                </div>
+            </form>    
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block bootstrap4_extra_script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.fa-pencil').click(function(){
+            var row = $(this).parent().parent().parent();
+            var license_plate="", vehicle_name="", make_model="", color="", notes="";
+            row.each(function(){
+                license_plate = $(this).find("td").eq(0).html();
+                vehicle_name = $(this).find("td").eq(1).html();
+                make_model = $(this).find("td").eq(2).html();
+                color = $(this).find("td").eq(3).html();
+                notes = $(this).find("td").eq(4).html();
+            })
+            console.log(license_plate, vehicle_name, make_model, color, notes);
+            var entry_id = row.attr('id');
+            console.log(entry_id);
+            $('#license_plate_t_'+entry_id).val(license_plate);
+            $('#license_plate_f_'+entry_id).val(license_plate);
+            $('#vehicle_name_t_'+entry_id).val(vehicle_name);
+            $('#vehicle_name_f_'+entry_id).val(vehicle_name);
+            $('#vehicle_model_make_t_'+entry_id).val(make_model);
+            $('#vehicle_model_make_f_'+entry_id).val(make_model);
+            $('#vehicle_color_t_'+entry_id).val(color);
+            $('#vehicle_color_f_'+entry_id).val(color);
+            $('#vehicle_note_t_'+entry_id).val(notes);
+            $('#vehicle_note_f_'+entry_id).val(notes);
+        })
+        
+    })
+</script>
+{% endblock %}

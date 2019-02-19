@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load bootstrap4 staticfiles icons %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Plate Recognizer</title>
+    <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/azia.css' %}">
+    <style>
+        .nav-link.active { color: black !important; background-color: #ddd; border-radius: 5px; }
+    </style>
+</head>
+
+<body style="background-color: #f8f9fa;">
+    
+    <div class="az-iconbar">
+        {% if user.is_authenticated %}
+        <a href="{% url 'demo_dashboard' %}" class="az-iconbar-logo"><i class="fa fa-car"></i></a>        <hr />
+            <nav class="nav">
+                <a href="{% url 'demo_dashboard' %}" class="nav-link {% if menu == 'dashboard' %}active{% endif %}" title="Dashboard"><i
+                        class="fa fa-tachometer"></i></a>
+                <a href="{% url 'demo_alert' %}" class="nav-link {% if menu == 'alert' %}active{% endif %}" title="Alerts"><i
+                        class="fa fa-bell"></i></a>
+                <a href="{% url 'demo_authorization' %}" class="nav-link {% if menu == 'authorization' %}active{% endif %}"
+                    title="Authorizations"><i class="fa fa-users"></i></a>
+            </nav>
+        {% else %}
+        <a href="#" class="az-iconbar-logo"><i class="fa fa-car"></i></a><hr />
+            <nav class="nav">
+                <a href="#" class="nav-link {% if menu == 'dashboard' %}active{% endif %}" title="Dashboard"><i
+                        class="fa fa-tachometer"></i></a>
+                <a href="#" class="nav-link {% if menu == 'alert' %}active{% endif %}" title="Alerts"><i
+                        class="fa fa-bell"></i></a>
+                <a href="#" class="nav-link {% if menu == 'authorization' %}active{% endif %}"
+                    title="Authorizations"><i class="fa fa-users"></i></a>
+            </nav>
+        {% endif %} 
+        
+        <div class="az-iconbar-bottom">
+            <a href="#" class="az-iconbar-help"><i class="fa fa-question-circle"></i></a>
+            
+            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                {% icon 'user-circle-o' %}
+            </a>            
+            
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% if user.is_authenticated %}
+                <a class="dropdown-item" href="{%url 'account_email' %}">Change Email</a>
+                <a class="dropdown-item" href="{%url 'account_change_password' %}">Change password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'account_logout' %}">{% icon 'sign-out' %} Log out</a>
+                {% else %}
+                <a class="dropdown-item" href="{%url 'account_login'%}">Sign In</a>
+                <a class="dropdown-item" href="{%url 'account_signup'%}">Sign Up</a>
+                {% endif %}
+            </div>
+                
+            
+            
+        </div><!-- az-iconbar-bottom -->
+    </div>
+    
+    <div class="az-content px-4 py-1 ml-5">
+        <div class="az-content-header" style='display:flex;'>
+            <div>
+                
+            
+                <h6 class="az-content-title tx-18 mg-b-5">
+                    {% block title %}
+                    {% endblock title %}
+                </h6>
+                {% if user.is_authenticated %}
+                <p class="az-content-text tx-13 mg-b-0">Hi, {{user}}.</p>
+                {% else %}                
+                <div class="text-center">
+                    <p></p>
+                    <h1>Welcome!</h1>
+                    <p>Please sign in or sign up to continue.</p>
+                </div>
+                {% endif %}
+                
+            </div>
+            <div>
+                <form class="form-inline">
+                    <input style="width: 300px;" type="search" class="form-control" placeholder="Search">
+                    <button class="btn"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            <div class="az-content-header-right">
+                {% block filter %}
+                <div class="media">
+                    <div class="media-body">
+                        <label>From</label>
+                        <h6>Dec 19, 2018</h6>
+                    </div><!-- media-body -->
+                </div><!-- media -->
+                <div class="media">
+                    <div class="media-body">
+                        <label>To</label>
+                        <h6>Dec 19, 2018</h6>
+                    </div><!-- media-body -->
+                </div><!-- media -->
+                <div class="media">
+                    <div class="media-body">
+                        <label>Cameras</label><br>
+                        <form class="form-inline">
+                            <div class="form-check form-check-inline">
+                                <input checked class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                <label class="form-check-label" for="inlineCheckbox1">1</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input checked class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                                <label class="form-check-label" for="inlineCheckbox2">2</label>
+                            </div>
+                            <input checked class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                            <label class="form-check-label" for="inlineCheckbox3">3</label>
+                    </div>
+                    </form>
+                </div><!-- media-body -->
+                {% endblock filter %}
+            </div><!-- media -->
+        </div>
+        {% block content %}
+        {% endblock content %}
+    </div>
+    
+    
+    
+    {% if not 'javascript_in_head'|bootstrap_setting %}
+    <!-- Bootstrap JavaScript if it is in body -->
+    {% bootstrap_javascript jquery="slim" %}
+    {% endif %}
+    {% block bootstrap4_extra_script %}{% endblock %}
+</body>
+
+
+<div class="form-check form-check-inline">
+
+
+</html>

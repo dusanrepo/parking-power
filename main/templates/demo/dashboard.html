@@ -1,0 +1,124 @@
+{% extends 'demo/base.html' %}
+{% load bootstrap4 staticfiles icons %}
+{% block title %}Activity Dashboard{% endblock title %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10">
+        <div class="card card-dashboard-twelve">
+            <div class="card-header py-0">
+                <div class="sales-overview">
+                    <div class="media">
+                        <h6 class="card-title mt-4">Recent Activity</h6>
+                    </div>
+                    <div class="media mt-2">
+                        <div class="media-body">
+                            <label class="mb-0">Coming In</label>
+                            <h4>23</h4>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                    <div class="media mt-2">
+                        <div class="media-body">
+                            <label class="mb-0">Going Out</label>
+                            <h4>11</h4>
+                        </div><!-- media-body -->
+                    </div><!-- media -->
+                </div>
+            </div><!-- card-header -->
+            <div class="card-body">
+                <table class="table table-hover mg-b-0">
+                    <tr>
+                        <th>Entrance</th>
+                        <th>Exit</th>
+                        <th>Duration</th>
+                        <th>License Plate</th>
+                        <th>Cameras</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr class="">
+                        <td>Dec 19, 9:10am</td>
+                        <td>Dec 19, 10:10am</td>
+                        <td>60 minutes</td>
+                        <td> <a href="{% url 'demo_vehicle' %}">ABC234</a> </td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 1</span>
+                            <span class="badge badge-secondary">Exit 3</span>
+                        </td>
+                        <td>
+                            <h5>
+                                <span class="badge badge-info">Comment <i class="fa fa-comment"></i></span>
+                                <span class="badge badge-success">Disapprove <i class="fa fa-check-square"></i></span>
+                            </h5>
+                        </td>
+                    </tr>
+                    <tr class="">
+                        <td>Dec 19, 9:50am</td>
+                        <td>Dec 19, 10:20am</td>
+                        <td>30 minutes</td>
+                        <td><a href="{% url 'demo_vehicle' %}">ABC123</a> <span class="badge badge-warning">New</span></td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 1</span>
+                            <span class="badge badge-secondary">Exit 3</span>
+                        </td>
+                        <td>
+                            <h5>
+                                <span class="badge badge-info">Comment <i class="fa fa-comment"></i></span>
+                                <span class="badge badge-secondary">Approve <i class="fa fa-check-square"></i></span>
+                            </h5>
+                        </td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>Dec 19, 11:30am</td>
+                        <td>-</td>
+                        <td>90 minutes</td>
+                        <td><a href="{% url 'demo_vehicle' %}">XZY123</a></td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 2</span>
+                        </td>
+                        <td>
+                            <h5>
+                                <span class="badge badge-info">Comment <i class="fa fa-comment"></i></span>
+                                <span class="badge badge-secondary">Approve <i class="fa fa-check-square"></i></span>
+                            </h5>
+                        </td>
+                    </tr>
+                    <tr class="">
+                        <td>Dec 19, 12:00am</td>
+                        <td>-</td>
+                        <td>60 minutes</td>
+                        <td><a href="{% url 'demo_vehicle' %}">XZY111</a></td>
+                        <td>
+                            <span class="badge badge-secondary">Entrance 2</span>
+                        </td>
+                        <td>
+                            <h5>
+                                <span class="badge badge-info">Comment <i class="fa fa-comment"></i></span>
+                                <span class="badge badge-secondary">Approve <i class="fa fa-check-square"></i></span>
+                            </h5>
+                        </td>
+                    </tr>
+                </table>
+            </div><!-- card-body -->
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card card-dashboard-fourteen">
+            <label class="az-content-label">This month</span></label>
+
+            <div class="card-body">
+                <div class="my-3">
+                    <h4><i class="fa fa-car text-primary"></i> 23</h4>
+                    <label>New license plates</label>
+                </div>
+                <div class="my-3">
+                    <h4><i class="fa fa-car text-secondary"></i> 108</h4>
+                    <label>Known license plates</label>
+                </div>
+                <div class="my-3">
+                    <h4><i class="fa fa-exclamation-triangle  text-danger"></i> 3</h4>
+                    <label>Alerts</label>
+                </div>
+            </div><!-- card-top-content -->
+        </div>
+    </div>
+</div>
+{% endblock %}
